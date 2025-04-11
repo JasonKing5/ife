@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input"
 import { useRegister, useLogin } from "@/hooks/useUserQuery"
 import { CreateUserRequest, LoginResponse } from "@/types/user"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const defaultUser: CreateUserRequest = {
   username: "",
@@ -12,11 +13,13 @@ const defaultUser: CreateUserRequest = {
 }
 
 export default function LoginPage() {
+  const navigate = useNavigate()
   const [user, setUser] = useState<CreateUserRequest>(defaultUser)
   const { mutate } = useRegister()
   const { mutate: login } = useLogin({
     onSuccess: (data: LoginResponse) => {
       localStorage.setItem('token', data.token)
+      navigate('/')
     }
   })
 
@@ -38,9 +41,13 @@ export default function LoginPage() {
       <Input type="text" value={user?.email} onChange={(e: { target: { value: any } }) => setUser({ ...user, email: e.target.value })} />
       <label>password</label>
       <Input type="text" value={user?.password} onChange={(e: { target: { value: any } }) => setUser({ ...user, password: e.target.value })} />
-      
-      <Button variant="secondary" onClick={handleRegister}>注册</Button>
+
       <Button variant="secondary" onClick={handleLogin}>登录</Button>
+
+      <div className="mt-4">
+        <div>Not a member?</div>
+        <Button variant="secondary" onClick={handleRegister}>注册</Button>
+      </div>
     </div>
   )
 }
