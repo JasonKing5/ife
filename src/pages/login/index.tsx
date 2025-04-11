@@ -19,6 +19,7 @@ export default function LoginPage() {
   const { mutate: login } = useLogin({
     onSuccess: (data: LoginResponse) => {
       localStorage.setItem('token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user))
       navigate('/')
     }
   })

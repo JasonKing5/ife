@@ -1,14 +1,16 @@
+export type Role = "admin" | "user";
+
 export interface UserBase {
   id: number;
   email: string;
   username: string;
-  role: string;
+  role: Role;
 }
 
 export interface CreateUserRequest {
   username: string;
   email: string;
-  role: string;
+  role: Role;
   password: string;
 }
 
@@ -21,8 +23,8 @@ export interface LoginRequest {
 
 export interface LoginResponse extends UserBase {
   token: string;
+  user: UserBase;
 }
-
 
 export interface UserResponse extends UserBase {
 }
