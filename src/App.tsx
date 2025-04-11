@@ -1,14 +1,16 @@
 import './App.css'
-import { Button } from './components/ui/button'
-import { Input } from './components/ui/input'
+import UserPage from './pages/user'
+import LoginPage from './pages/login'
+import { useState } from 'react'
+import { Button } from "@/components/ui/button"
 
 function App() {
+  const [showLogin, setShowLogin] = useState(true)
   return (
     <>
-      <div>
-        <Button>Click me111</Button>
-        <Input type="text" />
-      </div>
+      <Button variant="secondary" onClick={() => setShowLogin(!showLogin)}>{showLogin ? 'Go to home' : 'Go to login'}</Button>
+      {showLogin && <LoginPage />}
+      {!showLogin && <UserPage />}
     </>
   )
 }
