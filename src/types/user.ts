@@ -7,11 +7,18 @@ export interface UserBase {
   role: Role;
 }
 
-export interface CreateUserRequest {
+export interface RegisterRequest {
   username: string;
   email: string;
   role: Role;
   password: string;
+}
+
+export interface RegisterResponse extends UserBase {}
+
+export interface CreateUserRequest {
+  username: string;
+  email: string;
 }
 
 export interface CreateUserResponse extends UserBase {}

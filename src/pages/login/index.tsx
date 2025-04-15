@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useRegister, useLogin } from "@/hooks/useUserQuery"
-import { CreateUserRequest, LoginResponse } from "@/types/user"
+import { RegisterRequest, LoginResponse } from "@/types/user"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-const defaultUser: CreateUserRequest = {
+const defaultUser: RegisterRequest = {
   username: "",
   email: "",
   password: "",
@@ -14,7 +14,7 @@ const defaultUser: CreateUserRequest = {
 
 export default function LoginPage() {
   const navigate = useNavigate()
-  const [user, setUser] = useState<CreateUserRequest>(defaultUser)
+  const [user, setUser] = useState<RegisterRequest>(defaultUser)
   const { mutate } = useRegister()
   const { mutate: login } = useLogin({
     onSuccess: (data: LoginResponse) => {
