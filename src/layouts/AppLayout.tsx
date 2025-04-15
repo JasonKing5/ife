@@ -14,8 +14,8 @@ export default function AppLayout() {
   );
 
   return (
-    <div className="min-h-screen min-w-screen bg-gray-50 p-4 flex flex-col">
-      <header className="mb-4 flex gap-4 justify-between items-center h-10">
+    <div className="min-h-screen min-w-screen bg-gray-50 flex flex-col">
+      <header className="flex gap-4 justify-between items-center h-14 border-b-1 border-b-[#e2e2e3] pl-4 pr-4">
         <div className="flex gap-4">
           {visibleMenu.map((item) => (
             <NavLink
@@ -49,7 +49,7 @@ export default function AppLayout() {
           </Button>
         )}
       </header>
-      <main className="flex-1">
+      <main className="flex-1 flex">
         <Outlet />
       </main>
     </div>
