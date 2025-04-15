@@ -3,8 +3,10 @@ import { Input } from "@/components/ui/input"
 import { useQueryUser, useQueryUsers, useCreateUser, useDeleteUser, useUpdateUser } from "@/hooks/useUserQuery"
 import { UserResponse, CreateUserRequest } from "@/types/user"
 import { useState } from "react"
+import { useAuth } from "@/contexts/AuthContext"
 
 export default function UserPage() {
+  const { user: currentUser } = useAuth()
   const [viewUserId, setViewUserId] = useState<number | null>(null)
   const { data: userDetail, isLoading } = useQueryUser({ path: viewUserId })
   const { data: users, isLoading: usersLoading } = useQueryUsers()
@@ -30,25 +32,22 @@ export default function UserPage() {
   }
 
   const handleDeleteUser = (userId: number) => {
-    console.log('handleDeleteUser', userId)
     deleteUser(userId)
   }
 
   const handleUpdateUser = (userId: number) => {
-    console.log('handleUpdateUser', userId)
     const user = users?.find((user: UserResponse) => user.id === userId)
     if (!user) return
     updateUser({ id: userId, username: `${user.username} updated`, email: user.email, role: user.role })
   }
 
   const handleViewUser = (userId: number) => {
-    console.log('handleViewUser', userId)
     setViewUserId(userId)
   }
 
   return (
     <div className="flex flex-col items-center flex-1">
-      <div className="text-4xl font-bold mb-4">Current User: {String(JSON.parse(localStorage.getItem('user') ?? '')?.username ?? 'N/A')}</div>
+      <div className="text-4xl font-bold mb-4">Current User: {currentUser?.username ?? 'N/A'}</div>
       <ul>
         <li key='header'>id | username | email | role</li>
         {users?.map((user: UserResponse) => (

@@ -1,16 +1,16 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { menuList } from "@/constants/menu";
-import { useAuth, useUserRole } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { Role } from "@/types/user";
 
 export default function AppLayout() {
-  const { token } = useAuth();
-  const { role } = useUserRole();
+  const { token, user, logout } = useAuth();
   const navigate = useNavigate();
 
   const visibleMenu = menuList.filter(
-    (item) => !item.roles || item.roles.includes(role)
+    (item) => !item.roles || item.roles.includes(user?.role as Role)
   );
 
   return (
@@ -40,7 +40,7 @@ export default function AppLayout() {
         {token && (
           <Button
             onClick={() => {
-              localStorage.clear()
+              logout()
               navigate('/login')
             }}
             className="text-blue-600 font-bold"
