@@ -5,7 +5,8 @@ import { UserResponse, CreateUserRequest } from "@/types/user"
 import { useState } from "react"
 
 export default function UserPage() {
-  const { data, isLoading } = useQueryUser(7)
+  const [viewUserId, setViewUserId] = useState<number | null>(null)
+  const { data: userDetail, isLoading } = useQueryUser({ path: viewUserId })
   const { data: users, isLoading: usersLoading } = useQueryUsers()
   const { mutate: createUser } = useCreateUser({
     successMessage: '用户创建成功',
@@ -40,13 +41,19 @@ export default function UserPage() {
     updateUser({ id: userId, username: `${user.username} updated`, email: user.email, role: user.role })
   }
 
+  const handleViewUser = (userId: number) => {
+    console.log('handleViewUser', userId)
+    setViewUserId(userId)
+  }
+
   return (
     <div className="flex flex-col items-center flex-1">
-      <div className="text-4xl font-bold mb-4">Current User: {data?.username ?? 'No user found'}</div>
+      <div className="text-4xl font-bold mb-4">Current User: {String(JSON.parse(localStorage.getItem('user') ?? '')?.username ?? 'N/A')}</div>
       <ul>
         <li key='header'>id | username | email | role</li>
         {users?.map((user: UserResponse) => (
           <li key={user.id}>{user.id} | {user.username} | {user.email} | {user.role} |
+          <Button  variant="secondary" onClick={() => handleViewUser(user.id)}>View User</Button>
           <Button variant="secondary" onClick={() => handleUpdateUser(user.id)}>Update User</Button>
           <Button variant="secondary" onClick={() => handleDeleteUser(user.id)}>Delete User</Button>
           </li>
@@ -56,6 +63,15 @@ export default function UserPage() {
       <Input type="text" value={user?.username} onChange={(e: { target: { value: any } }) => setUser({ ...user, username: e.target.value })} />
       <Input type="text" value={user?.email} onChange={(e: { target: { value: any } }) => setUser({ ...user, email: e.target.value })} />
       <Button variant="secondary" onClick={handleCreateUser}>Create User</Button>
+      {userDetail && !isLoading && (
+        <div>
+          <h2>View User</h2>
+          <p>id: {userDetail.id}</p>
+          <p>username: {userDetail.username}</p>
+          <p>email: {userDetail.email}</p>
+          <p>role: {userDetail.role}</p>
+        </div>
+      )}
     </div>
   )
 }

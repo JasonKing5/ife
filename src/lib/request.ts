@@ -2,12 +2,31 @@ import axios from "./axios"
 import { useQuery, useMutation, UseQueryResult, UseMutationResult, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-export const get = <T = any>(url: string, params?: any, options?: any): UseQueryResult<T, Error> =>
-  useQuery({
-    queryKey: [url, params],
-    queryFn: () => axios.get<T>(url, { params }),
-    ...options,
-  })
+// get 支持 RESTful 路径参数和 query 参数
+/**
+ * @param url string 基础url（如 /users）
+ * @param options object 可选：
+ *   - params: query string 对象（如 { page: 1 }）
+ *   - path: 路径参数（如 id，自动拼接到 url）
+ *   - 其它 useQuery options
+ */
+export const get = <T = any>(url: string, options?: {
+  params?: Record<string, any>,
+  path?: string | number,
+  [key: string]: any
+}): UseQueryResult<T, Error> => {
+  const { params, path, ...rest } = options || {};
+  // 拼接 RESTful 路径参数
+  let realUrl = url;
+  if (path !== undefined && path !== null) {
+    realUrl = `${url}/${path}`;
+  }
+  return useQuery({
+    queryKey: [realUrl, params],
+    queryFn: () => axios.get<T>(realUrl, { params }),
+    ...rest,
+  });
+}
 
 // 通用 onSuccess 处理，自动 toast + invalidateQueries，可自定义 successMessage/invalidate
 interface GlobalSuccessOptions {
