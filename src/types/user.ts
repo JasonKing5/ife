@@ -24,7 +24,7 @@ export interface CreateUserRequest {
 export interface CreateUserResponse extends UserBase {}
 
 export interface LoginRequest {
-  username: string;
+  email: string;
   password: string;
 }
 

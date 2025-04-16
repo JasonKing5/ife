@@ -52,16 +52,16 @@ export default function UserPage() {
         <li key='header'>id | username | email | role</li>
         {users?.map((user: UserResponse) => (
           <li key={user.id}>{user.id} | {user.username} | {user.email} | {user.role} |
-          <Button  variant="secondary" onClick={() => handleViewUser(user.id)}>View User</Button>
-          <Button variant="secondary" onClick={() => handleUpdateUser(user.id)}>Update User</Button>
-          <Button variant="secondary" onClick={() => handleDeleteUser(user.id)}>Delete User</Button>
+          <Button onClick={() => handleViewUser(user.id)}>View User</Button>
+          <Button onClick={() => handleUpdateUser(user.id)}>Update User</Button>
+          <Button onClick={() => handleDeleteUser(user.id)}>Delete User</Button>
           </li>
         ))}
         <li key='footer'>Total: {users?.length}</li>
       </ul>
       <Input type="text" value={user?.username} onChange={(e: { target: { value: any } }) => setUser({ ...user, username: e.target.value })} />
       <Input type="text" value={user?.email} onChange={(e: { target: { value: any } }) => setUser({ ...user, email: e.target.value })} />
-      <Button variant="secondary" onClick={handleCreateUser}>Create User</Button>
+      <Button onClick={handleCreateUser}>Create User</Button>
       {userDetail && !isLoading && (
         <div>
           <h2>View User</h2>

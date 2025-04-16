@@ -17,4 +17,9 @@ export const menuList: MenuItem[] = [
     path: "/user",
     roles: ["admin"],
   },
+  {
+    label: "Dashboard",
+    path: "/dashboard",
+    roles: ["user"],
+  },
 ];

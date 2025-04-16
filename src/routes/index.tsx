@@ -7,6 +7,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 const Login = lazy(() => import("@/pages/login"));
 const HomePage = lazy(() => import("@/pages/home"));
 const UserPage = lazy(() => import("@/pages/user"));
+const Dashboard = lazy(() => import("@/pages/dashboard"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 export const AppRoutes = () =>
@@ -18,14 +19,19 @@ export const AppRoutes = () =>
     },
     {
       path: "/",
+      element: <AppLayout />,
+      children: [{ index: true, element: <HomePage /> }],
+    },
+    {
+      path: "/",
       element: (
         <ProtectedRoute>
           <AppLayout />
         </ProtectedRoute>
       ),
       children: [
-        { index: true, element: <HomePage /> },
         { path: "user", element: <UserPage /> },
+        { path: "dashboard", element: <Dashboard /> },
         { path: "*", element: <NotFound /> },
       ],
     },

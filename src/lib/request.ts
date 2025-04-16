@@ -34,18 +34,18 @@ interface GlobalSuccessOptions {
   invalidate?: boolean;
   [key: string]: any; // 允许透传其它 mutation options
 }
-function withGlobalSuccess(url: string, options?: GlobalSuccessOptions) {
+const withGlobalSuccess = (url: string, options?: GlobalSuccessOptions) => {
   const queryClient = useQueryClient();
   const { successMessage, invalidate = true, ...restOptions } = options || {};
   return {
     ...restOptions,
     onSuccess: (data: any, ...rest: any[]) => {
+      restOptions?.onSuccess?.(data, ...rest);
       const message = successMessage || '操作成功';
       toast.success(message);
       if (invalidate) {
         queryClient.invalidateQueries({ queryKey: [url] });
       }
-      options?.onSuccess?.(data, ...rest);
     }
   };
 }
