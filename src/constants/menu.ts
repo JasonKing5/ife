@@ -8,7 +8,7 @@ export interface MenuItem {
 
 export const menuList: MenuItem[] = [
   {
-    label: "Home",
+    label: "Auto Job AI",
     path: "/",
     roles: ["admin", "user"],
   },

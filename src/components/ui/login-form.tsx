@@ -13,7 +13,11 @@ import { RegisterRequest } from "@/types/user"
 
 export function LoginForm({
   className,
-  ...props
+  handleLogin,
+  handleRegister,
+  loginUser,
+  setLoginUser,
+  ...rest
 }: React.ComponentPropsWithoutRef<"div"> & {
   handleLogin: () => void
   handleRegister: () => void
@@ -21,7 +25,7 @@ export function LoginForm({
   setLoginUser: (user: RegisterRequest) => void
 }) {
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6", className)} {...rest}>
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
@@ -39,8 +43,8 @@ export function LoginForm({
                   type="email"
                   placeholder="m@example.com"
                   required
-                  value={props.loginUser.email}
-                  onChange={(e) => props.setLoginUser({ ...props.loginUser, email: e.target.value })}
+                  value={loginUser.email}
+                  onChange={(e) => setLoginUser({ ...loginUser, email: e.target.value })}
                 />
               </div>
               <div className="grid gap-2">
@@ -53,9 +57,9 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required value={props.loginUser.password} onChange={(e) => props.setLoginUser({ ...props.loginUser, password: e.target.value })} />
+                <Input id="password" type="password" required value={loginUser.password} onChange={(e) => setLoginUser({ ...loginUser, password: e.target.value })} />
               </div>
-              <Button type="submit" className="w-full" onClick={props.handleLogin}>
+              <Button type="submit" className="w-full" onClick={handleLogin}>
                 Login
               </Button>
             </div>

@@ -4,6 +4,12 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Role } from "@/types/user";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu"
+import { BrainCircuit } from "lucide-react";
 
 export default function AppLayout() {
   const { token, user, logout } = useAuth();
@@ -26,19 +32,23 @@ export default function AppLayout() {
   return (
     <div className="min-h-screen min-w-screen bg-gray-50 flex flex-col">
       <header className="flex gap-4 justify-between items-center h-14 border-b-1 border-b-[#e2e2e3] pl-4 pr-4">
-        <div className="flex gap-4">
-          {visibleMenu.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                isActive ? "text-blue-600 font-bold flex items-center gap-1" : "text-gray-600 flex items-center gap-1"
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </div>
+        <NavigationMenu>
+          <NavigationMenuList>
+            {visibleMenu.map((item) => (
+              <NavigationMenuItem key={item.path}>
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className={({ isActive }) =>
+                    isActive ? "text-blue-600 font-bold flex items-center gap-1" : "text-gray-600 flex items-center gap-1"
+                  }
+                >
+                  {item.path === '/' ? <div className="flex items-center gap-1"><BrainCircuit className="size-4" />{item.label}</div> : item.label}
+                </NavLink>  
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
         {!token && (
           <Button
             variant="secondary"
