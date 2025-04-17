@@ -1,19 +1,19 @@
-import { useLogin } from "@/hooks/useUserQuery"
-import { LoginResponse } from "@/types/user"
-import { useEffect } from "react"
+import { useLogin, useRegister } from "@/hooks/useUserQuery"
+import { LoginResponse, RegisterFormValues } from "@/types/user"
+import { useEffect, useState } from "react"
 import { useAuth } from "@/contexts/AuthContext"
 import { useNavigate } from "react-router-dom"
 import { BrainCircuit } from "lucide-react"
 import { LoginForm } from "@/components/ui/login-form"
 import { loginSchema } from "@/schemas/loginSchema"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
+import { RegisterForm } from "@/components/ui/register-form"
 
 export type LoginFormValues = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
   const { setToken, setUser, token } = useAuth()
+  const [isRegister, setIsRegister] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -22,23 +22,21 @@ export default function LoginPage() {
     }
   }, [token])
 
-  const { mutate: login } = useLogin({
+  const { mutate: loginMutate } = useLogin({
     onSuccess: (data: LoginResponse) => {
       setToken(data.token)
       setUser(data.user)
     },
   })
 
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  })
+  const { mutate: registerMutate } = useRegister()
 
-  const handleSubmit = (values: LoginFormValues) => {
-    login({ email: values.email, password: values.password })
+  const handleLogin = (data: LoginFormValues) => {
+    loginMutate(data)
+  }
+
+  const handleRegister = (data: RegisterFormValues) => {
+    registerMutate(data)
   }
 
   return (
@@ -50,11 +48,18 @@ export default function LoginPage() {
           </div>
           Auto Job AI
         </a>
-        <LoginForm
-          form={form}
-          // @ts-ignore
-          onSubmit={handleSubmit}
-        />
+        {isRegister ? (
+          <RegisterForm 
+            onSubmit={handleRegister}
+            onLogin={() => setIsRegister(false)}
+          />
+        ) : (
+          <LoginForm 
+            // @ts-ignore
+            onSubmit={handleLogin} 
+            onRegister={() => setIsRegister(true)}
+          />
+        )}
       </div>
     </div>
   )

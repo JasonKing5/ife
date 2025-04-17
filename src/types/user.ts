@@ -1,3 +1,5 @@
+import { z } from "zod"
+
 export type Role = "admin" | "user";
 
 export interface UserBase {
@@ -43,3 +45,17 @@ export interface UpdateUserRequest extends UserBase {
 export interface UpdateUserResponse extends UserBase {
 }
 
+export const loginSchema = z.object({
+  email: z.string().email("请输入正确的邮箱"),
+  password: z.string().min(6, "密码至少6位")
+})
+
+export const registerSchema = z.object({
+  username: z.string().min(2, "用户名至少2个字符"),
+  email: z.string().email("请输入正确的邮箱"),
+  password: z.string().min(6, "密码至少6位"),
+  role: z.enum(["user", "admin"], { required_error: "请选择角色" })
+})
+
+export type LoginFormValues = z.infer<typeof loginSchema>
+export type RegisterFormValues = z.infer<typeof registerSchema>

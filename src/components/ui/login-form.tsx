@@ -9,22 +9,25 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { UseFormReturn } from "react-hook-form"
-import { LoginFormValues } from "@/pages/login"
+import { useForm } from "react-hook-form"
+import { loginSchema, LoginFormValues } from "@/types/user"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 export function LoginForm({
-  form,
   onSubmit,
+  onRegister,
   ...rest
 }: React.ComponentPropsWithoutRef<"div"> & {
-  form: UseFormReturn<LoginFormValues>
   onSubmit: (values: LoginFormValues) => void
+  onRegister: () => void
 }) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = form
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  })
   return (
     <div className={cn("flex flex-col gap-6")} {...rest}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -43,7 +46,7 @@ export function LoginForm({
                   <Input
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
+                    placeholder="user@example.com"
                     required
                     {...register('email')}
                   />
@@ -95,18 +98,18 @@ export function LoginForm({
               
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
+                <a onClick={onRegister} className="underline underline-offset-4">
                   Sign up
                 </a>
               </div>
             </div>
           </CardContent>
         </Card>
-        <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
-          By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-          and <a href="#">Privacy Policy</a>.
-        </div>
       </form>
+      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
+        By clicking continue, you agree to our <a href="#" className="underline underline-offset-4">Terms of Service</a>{" "}
+        and <a href="#" className="underline underline-offset-4">Privacy Policy</a>.
+      </div>
     </div>
   )
 }
