@@ -1,12 +1,10 @@
 import { useQueryUsers, useDeleteUser } from "@/hooks/useUserQuery"
 import { useState } from "react"
-import { useAuth } from "@/contexts/AuthContext"
 import { columns } from "./columns"
 import { DataTable } from "./data-table"
 import UserDialog from "./user-dialog"
 
 export default function UserPage() {
-  const { user: currentUser } = useAuth()
   const [userId, setUserId] = useState<number | null>(null)
   const [open, setOpen] = useState(false)
   const [type, setType] = useState<'create' | 'update' | 'view' | null>(null)
@@ -42,7 +40,6 @@ export default function UserPage() {
 
   return (
     <div className="flex flex-col items-center flex-1">
-      <div className="text-4xl font-bold mb-4">Current User: {currentUser?.username ?? 'N/A'}</div>
       <div className="container mx-auto py-10">
         <DataTable columns={tableColumns} data={users ?? []} handleCreateUser={handleCreateUser} />
       </div>
