@@ -1,23 +1,20 @@
-import { useRegister, useLogin } from "@/hooks/useUserQuery"
-import { RegisterRequest, LoginResponse } from "@/types/user"
-import { useState, useEffect } from "react"
+import { useLogin } from "@/hooks/useUserQuery"
+import { LoginResponse } from "@/types/user"
+import { useEffect } from "react"
 import { useAuth } from "@/contexts/AuthContext"
 import { useNavigate } from "react-router-dom"
 import { BrainCircuit } from "lucide-react"
 import { LoginForm } from "@/components/ui/login-form"
+import { loginSchema } from "@/schemas/loginSchema"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
 
-const defaultUser: RegisterRequest = {
-  username: "",
-  email: "root@example.com",
-  password: "123456",
-  role: "user"
-}
+export type LoginFormValues = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
   const { setToken, setUser, token } = useAuth()
   const navigate = useNavigate()
-  const [loginUser, setLoginUser] = useState<RegisterRequest>(defaultUser)
-  const { mutate } = useRegister()
 
   useEffect(() => {
     if (token) {
@@ -32,16 +29,16 @@ export default function LoginPage() {
     },
   })
 
-  const handleLogin = () => {
-    if (!loginUser || !loginUser.email || !loginUser.password) {
-      return
-    }
-    login({ email: loginUser.email, password: loginUser.password })
-  }
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  })
 
-  const handleRegister = () => {
-    if (!loginUser) return
-    mutate({ username: loginUser.username, email: loginUser.email, password: loginUser.password, role: loginUser.role })
+  const handleSubmit = (values: LoginFormValues) => {
+    login({ email: values.email, password: values.password })
   }
 
   return (
@@ -54,10 +51,9 @@ export default function LoginPage() {
           Auto Job AI
         </a>
         <LoginForm
-          loginUser={loginUser}
-          setLoginUser={setLoginUser}
-          handleLogin={handleLogin}
-          handleRegister={handleRegister}
+          form={form}
+          // @ts-ignore
+          onSubmit={handleSubmit}
         />
       </div>
     </div>
