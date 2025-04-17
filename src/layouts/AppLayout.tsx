@@ -10,6 +10,7 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 import { BrainCircuit } from "lucide-react";
+import AccountMenu from "@/components/AccountMenu";
 
 export default function AppLayout() {
   const { token, user, logout } = useAuth();
@@ -49,7 +50,7 @@ export default function AppLayout() {
             ))}
           </NavigationMenuList>
         </NavigationMenu>
-        {!token && (
+        {/* {!token && (
           <Button
             variant="secondary"
             onClick={() => navigate('/login')}
@@ -69,7 +70,8 @@ export default function AppLayout() {
           >
             Logout
           </Button>
-        )}
+        )} */}
+        <AccountMenu />
       </header>
       <main className="flex-1 flex">
         <Outlet />

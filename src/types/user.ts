@@ -5,6 +5,7 @@ export interface UserBase {
   email: string;
   username: string;
   role: Role;
+  avatar?: string;
 }
 
 export interface RegisterRequest {
