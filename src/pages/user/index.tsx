@@ -1,36 +1,25 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { useQueryUser, useQueryUsers, useCreateUser, useDeleteUser, useUpdateUser } from "@/hooks/useUserQuery"
-import { UserResponse, CreateUserRequest } from "@/types/user"
+import { useQueryUsers, useDeleteUser } from "@/hooks/useUserQuery"
 import { useState } from "react"
 import { useAuth } from "@/contexts/AuthContext"
 import { columns } from "./columns"
 import { DataTable } from "./data-table"
+import UserDialog from "./user-dialog"
 
 export default function UserPage() {
   const { user: currentUser } = useAuth()
-  const [viewUserId, setViewUserId] = useState<number | null>(null)
-  const { data: userDetail, isLoading } = useQueryUser({ path: viewUserId })
+  const [userId, setUserId] = useState<number | null>(null)
+  const [open, setOpen] = useState(false)
+  const [type, setType] = useState<'create' | 'update' | 'view' | null>(null)
   const { data: users, isLoading: usersLoading } = useQueryUsers()
-  const { mutate: createUser } = useCreateUser({
-    successMessage: '用户创建成功',
-  })
-  const { mutate: updateUser } = useUpdateUser({
-    successMessage: '用户更新成功',
-  })
   const { mutate: deleteUser } = useDeleteUser({
     successMessage: '用户删除成功',
   });
-  const [user, setUser] = useState<CreateUserRequest>({
-    username: '',
-    email: ''
-  })
 
-  if (isLoading || usersLoading) return <div>Loading...</div>
+  if (usersLoading) return <div>Loading...</div>
 
   const handleCreateUser = () => {
-    if (!user) return
-    createUser(user)
+    setOpen(true)
+    setType('create')
   }
 
   const handleDeleteUser = (userId: number) => {
@@ -38,13 +27,15 @@ export default function UserPage() {
   }
 
   const handleUpdateUser = (userId: number) => {
-    const user = users?.find((user: UserResponse) => user.id === userId)
-    if (!user) return
-    updateUser({ id: userId, username: `${user.username} updated`, email: user.email, role: user.role })
+    setOpen(true)
+    setType('update')
+    setUserId(userId)
   }
 
   const handleViewUser = (userId: number) => {
-    setViewUserId(userId)
+    setOpen(true)
+    setType('view')
+    setUserId(userId)
   }
 
   const tableColumns = columns({ handleViewUser, handleUpdateUser, handleDeleteUser })
@@ -53,20 +44,9 @@ export default function UserPage() {
     <div className="flex flex-col items-center flex-1">
       <div className="text-4xl font-bold mb-4">Current User: {currentUser?.username ?? 'N/A'}</div>
       <div className="container mx-auto py-10">
-        <DataTable columns={tableColumns} data={users ?? []} />
+        <DataTable columns={tableColumns} data={users ?? []} handleCreateUser={handleCreateUser} />
       </div>
-      <Input type="text" value={user?.username} onChange={(e: { target: { value: any } }) => setUser({ ...user, username: e.target.value })} />
-      <Input type="text" value={user?.email} onChange={(e: { target: { value: any } }) => setUser({ ...user, email: e.target.value })} />
-      <Button onClick={handleCreateUser}>Create User</Button>
-      {userDetail && !isLoading && (
-        <div>
-          <h2>View User</h2>
-          <p>id: {userDetail.id}</p>
-          <p>username: {userDetail.username}</p>
-          <p>email: {userDetail.email}</p>
-          <p>role: {userDetail.role}</p>
-        </div>
-      )}
+      <UserDialog open={open} onOpenChange={setOpen} userId={userId} type={type} />
     </div>
   )
 }

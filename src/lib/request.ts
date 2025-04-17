@@ -41,8 +41,9 @@ const withGlobalSuccess = (url: string, options?: GlobalSuccessOptions) => {
     ...restOptions,
     onSuccess: (data: any, ...rest: any[]) => {
       restOptions?.onSuccess?.(data, ...rest);
-      const message = successMessage || '操作成功';
-      toast.success(message);
+      if (successMessage) {
+        toast.success(successMessage);
+      }
       if (invalidate) {
         queryClient.invalidateQueries({ queryKey: [url] });
       }
