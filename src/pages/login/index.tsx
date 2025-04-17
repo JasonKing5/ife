@@ -8,8 +8,8 @@ import { LoginForm } from "@/components/ui/login-form"
 
 const defaultUser: RegisterRequest = {
   username: "",
-  email: "",
-  password: "",
+  email: "root@example.com",
+  password: "123456",
   role: "user"
 }
 
