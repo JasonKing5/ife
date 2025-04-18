@@ -1,5 +1,5 @@
-import { useLogin, useRegister } from "@/hooks/useUserQuery"
-import { LoginResponse, RegisterFormValues } from "@/types/user"
+import { useLogin, useRegister, useResetPassword } from "@/hooks/useUserQuery"
+import { AuthStatus, LoginResponse, RegisterFormValues, ResetPasswordFormValues } from "@/types/user"
 import { useEffect, useState } from "react"
 import { useAuth } from "@/contexts/AuthContext"
 import { useNavigate } from "react-router-dom"
@@ -8,12 +8,13 @@ import { LoginForm } from "@/components/ui/login-form"
 import { loginSchema } from "@/schemas/loginSchema"
 import * as z from "zod"
 import { RegisterForm } from "@/components/ui/register-form"
+import { ResetPasswordForm } from "@/components/ui/reset-password-form"
 
 export type LoginFormValues = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
   const { setToken, setUser, token } = useAuth()
-  const [isRegister, setIsRegister] = useState(false)
+  const [authStatus, setAuthStatus] = useState(AuthStatus.Login)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -29,6 +30,10 @@ export default function LoginPage() {
     },
   })
 
+  const { mutate: resetPasswordMutate } = useResetPassword({
+    successMessage: "Reset email sent successfully",
+  })
+
   const { mutate: registerMutate } = useRegister()
 
   const handleLogin = (data: LoginFormValues) => {
@@ -37,6 +42,10 @@ export default function LoginPage() {
 
   const handleRegister = (data: RegisterFormValues) => {
     registerMutate(data)
+  }
+
+  const handleResetPassword = (data: ResetPasswordFormValues) => {
+    resetPasswordMutate(data)
   }
 
   return (
@@ -48,18 +57,31 @@ export default function LoginPage() {
           </div>
           Auto Job AI
         </a>
-        {isRegister ? (
+        {authStatus === AuthStatus.Register && (
           <RegisterForm 
             onSubmit={handleRegister}
-            onLogin={() => setIsRegister(false)}
+            onLogin={() => setAuthStatus(AuthStatus.Login)}
           />
-        ) : (
+        )}
+        {authStatus === AuthStatus.Login && (
           <LoginForm 
             // @ts-ignore
             onSubmit={handleLogin} 
-            onRegister={() => setIsRegister(true)}
+            onRegister={() => setAuthStatus(AuthStatus.Register)}
+            onReset={() => setAuthStatus(AuthStatus.ResetPassword)}
           />
         )}
+        {authStatus === AuthStatus.ResetPassword && (
+          <ResetPasswordForm
+            // @ts-ignore
+            onSubmit={handleResetPassword}
+            onLogin={() => setAuthStatus(AuthStatus.Login)}
+          />
+        )}
+        <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
+          By clicking continue, you agree to our <a href="#" className="underline underline-offset-4">Terms of Service</a>{" "}
+          and <a href="#" className="underline underline-offset-4">Privacy Policy</a>.
+        </div>
       </div>
     </div>
   )

@@ -32,3 +32,7 @@ export const useLogin = (options?: any) => {
 export const useLogout = (options?: any) => {
   return post<LoginResponse, void>(`/auth/logout`, options)
 }
+
+export const useResetPassword = (options?: any) => {
+  return post<LoginResponse, { email: string }>(`/auth/reset`, options)
+}

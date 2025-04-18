@@ -2,6 +2,12 @@ import { z } from "zod"
 
 export type Role = "admin" | "user";
 
+export const AuthStatus = {
+  Login: "login",
+  Register: "register",
+  ResetPassword: "reset-password"
+}
+
 export interface UserBase {
   id: number;
   email: string;
@@ -57,5 +63,10 @@ export const registerSchema = z.object({
   role: z.enum(["user", "admin"], { required_error: "请选择角色" })
 })
 
+export const resetPasswordSchema = z.object({
+  email: z.string().email("请输入正确的邮箱")
+})
+
 export type LoginFormValues = z.infer<typeof loginSchema>
 export type RegisterFormValues = z.infer<typeof registerSchema>
+export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>

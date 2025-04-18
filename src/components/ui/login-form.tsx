@@ -16,10 +16,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 export function LoginForm({
   onSubmit,
   onRegister,
+  onReset,
   ...rest
 }: React.ComponentPropsWithoutRef<"div"> & {
   onSubmit: (values: LoginFormValues) => void
   onRegister: () => void
+  onReset: () => void
 }) {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -56,8 +58,8 @@ export function LoginForm({
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
                     <a
-                      href="#"
                       className="ml-auto text-sm underline-offset-4 hover:underline"
+                      onClick={onReset}
                     >
                       Forgot your password?
                     </a>
@@ -106,10 +108,6 @@ export function LoginForm({
           </CardContent>
         </Card>
       </form>
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
-        By clicking continue, you agree to our <a href="#" className="underline underline-offset-4">Terms of Service</a>{" "}
-        and <a href="#" className="underline underline-offset-4">Privacy Policy</a>.
-      </div>
     </div>
   )
 }
