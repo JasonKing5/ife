@@ -29,6 +29,10 @@ export const useLogin = (options?: any) => {
   return post<LoginResponse, LoginRequest>(`/auth/login`, options)
 }
 
+export const useRefreshToken = (options?: any) => {
+  return post<LoginResponse, string>(`/auth/refresh`, options)
+}
+
 export const useLogout = (options?: any) => {
   return post<LoginResponse, void>(`/auth/logout`, options)
 }

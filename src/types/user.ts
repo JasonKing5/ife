@@ -39,6 +39,7 @@ export interface LoginRequest {
 
 export interface LoginResponse extends UserBase {
   token: string;
+  refreshToken: string;
   user: UserBase;
 }
 

@@ -13,7 +13,7 @@ import { ResetPasswordForm } from "@/components/ui/reset-password-form"
 export type LoginFormValues = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
-  const { setToken, setUser, token } = useAuth()
+  const { setToken, setRefreshToken, setUser, token } = useAuth()
   const [authStatus, setAuthStatus] = useState(AuthStatus.Login)
   const navigate = useNavigate()
 
@@ -26,6 +26,7 @@ export default function LoginPage() {
   const { mutate: loginMutate } = useLogin({
     onSuccess: (data: LoginResponse) => {
       setToken(data.token)
+      setRefreshToken(data.refreshToken)
       setUser(data.user)
     },
   })
