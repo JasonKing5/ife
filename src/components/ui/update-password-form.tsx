@@ -1,21 +1,23 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { resetPasswordSchema, ResetPasswordFormValues } from "@/types/user"
+import { UpdatePasswordFormValues, updatePasswordSchema } from "@/types/user"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-export function ResetPasswordForm({
+export function UpdatePasswordForm({
   onSubmit,
   onLogin
 }: {
-  onSubmit: (data: ResetPasswordFormValues) => void
+  onSubmit: (data: UpdatePasswordFormValues) => void
   onLogin: () => void
 }) {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<ResetPasswordFormValues>({
-    resolver: zodResolver(resetPasswordSchema)
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<UpdatePasswordFormValues>({
+    resolver: zodResolver(updatePasswordSchema)
   })
+  const searchParams = new URLSearchParams(location.search)
+  const email = searchParams.get("email") ?? ''
 
   return (
     <div className={"flex flex-col gap-6"} >
@@ -27,8 +29,14 @@ export function ResetPasswordForm({
           <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" {...register("email")} placeholder="user@example.com" />
+              <Input id="email" {...register("email")} placeholder="user@example.com" defaultValue={email!} />
               {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" {...register("password")} placeholder="password" />
+              {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
             </div>
 
             <Button type="submit" className="w-full" disabled={isSubmitting}>

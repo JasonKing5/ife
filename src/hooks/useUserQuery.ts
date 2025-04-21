@@ -1,5 +1,5 @@
 import { get, post, put, del } from '@/lib/request'
-import { UserResponse, RegisterResponse, RegisterRequest, UpdateUserRequest, LoginRequest, LoginResponse, CreateUserResponse, CreateUserRequest } from '@/types/user'
+import { UserResponse, RegisterResponse, RegisterRequest, UpdateUserRequest, LoginRequest, LoginResponse, CreateUserResponse, CreateUserRequest, UpdatePasswordRequest } from '@/types/user'
 
 export const useRegister = (options?: any) => {
   return post<RegisterResponse, RegisterRequest>(`/auth/register`, options)
@@ -35,4 +35,8 @@ export const useLogout = (options?: any) => {
 
 export const useResetPassword = (options?: any) => {
   return post<LoginResponse, { email: string }>(`/auth/reset`, options)
+}
+
+export const useUpdatePassword = (options?: any) => {
+  return put<UserResponse, UpdatePasswordRequest>(`/auth/update/password`, options)
 }

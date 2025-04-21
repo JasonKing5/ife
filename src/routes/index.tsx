@@ -3,6 +3,7 @@ import { lazy } from "react";
 import AppLayout from "@/layouts/AppLayout";
 import AuthLayout from "@/layouts/AuthLayout";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import ResetPasswordPage from "@/pages/login/reset";
 
 const Login = lazy(() => import("@/pages/login"));
 const HomePage = lazy(() => import("@/pages/home"));
@@ -16,6 +17,11 @@ export const AppRoutes = () =>
       path: "/login",
       element: <AuthLayout />,
       children: [{ index: true, element: <Login /> }],
+    },
+    {
+      path: "/reset",
+      element: <AuthLayout />,
+      children: [{ index: true, element: <ResetPasswordPage /> }],
     },
     {
       path: "/",
