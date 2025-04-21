@@ -36,6 +36,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     else localStorage.removeItem("user")
   }, [user])
 
+  useEffect(() => {
+    const handler = (e: CustomEvent) => setToken(e.detail.token)
+    window.addEventListener('tokenUpdated', handler as EventListener)
+    return () => window.removeEventListener('tokenUpdated', handler as EventListener)
+  }, [])
+
   const logout = () => {
     setToken(null)
     setRefreshToken(null)

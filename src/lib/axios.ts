@@ -47,7 +47,7 @@ instance.interceptors.response.use(
             .then(res => {
               const data = res.data
               if (data?.code === 0 && data?.data?.token) {
-                localStorage.setItem('token', data.data.token)
+                window.dispatchEvent(new CustomEvent('tokenUpdated', { detail: { token: data.data.token } }))
                 // localStorage.setItem('refreshToken', data.data.refreshToken)
                 onRefreshed(data.data.token)
                 return data.data.token
