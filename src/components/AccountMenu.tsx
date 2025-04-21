@@ -48,7 +48,7 @@ const AccountMenu = () => {
       {open && (
         <div
           ref={menuRef}
-          className="flex flex-col absolute top-[55px] right-0 bg-white rounded-lg shadow-lg"
+          className="flex flex-col absolute top-[55px] right-0 bg-white rounded-lg shadow-lg z-21"
         >
           <div className="flex items-center gap-2 p-2">
             <Avatar className="h-8 w-8 rounded-lg cursor-pointer" onClick={() => {}}>

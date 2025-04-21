@@ -40,7 +40,7 @@ export default function UserPage() {
 
   return (
     <div className="flex flex-col items-center flex-1">
-      <div className="container mx-auto py-10">
+      <div className="container mx-auto py-4">
         <DataTable columns={tableColumns} data={users ?? []} handleCreateUser={handleCreateUser} />
       </div>
       <UserDialog open={open} onOpenChange={setOpen} userId={userId} type={type} />

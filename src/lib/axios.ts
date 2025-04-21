@@ -22,6 +22,10 @@ instance.interceptors.response.use(
     // 如果是自定义业务错误
     if (res?.code !== 0) {
       toast.warning(res.message || '操作失败');
+      if (res?.code === 401) {
+        localStorage.removeItem('token')
+        location.href = '/login'
+      }
       // 拦截业务错误，拒绝 promise，交由 catch 处理（比如 react-query）
       return Promise.reject(res);
     }
