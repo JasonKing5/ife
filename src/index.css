@@ -57,7 +57,7 @@ a {
   cursor: pointer;
 }
 a:hover {
-  color: rgba(255, 255, 255, 0.97);
+  color: #155dfc;
 }
 
 body {
@@ -94,7 +94,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
@@ -106,7 +106,7 @@ button:focus-visible {
     color: #f4f4f5;
     background-color: #213547;
   }
-}
+} */
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
