@@ -26,21 +26,39 @@ const AccountMenu = () => {
     logout()
   }
 
+  const getInitials = (name?: string) => {
+    if (!name) return ""
+    // 只取前两个单词的首字母，支持中英文
+    return name
+      .split(/[\s_-]+/) // 按空格、下划线、连字符分词
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(word => word[0]?.toUpperCase() || "")
+      .join("")
+  }
+
+  const renderAvatar = () => {
+    return (
+      <Avatar className="h-8 w-8 rounded-lg cursor-pointer">
+        {token
+          ? (user?.avatar 
+            ? <AvatarImage src={avatarUrl} alt={user?.username} />
+            : <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-100 font-medium hover:bg-gray-200 hover:text-gray-600">{getInitials(user?.username)}</div>
+          )
+          : <AvatarImage src={avatarUrl} alt={user?.username} />}
+      </Avatar>
+    )
+  }
+
   return (
     <div className="flex items-center gap-2">
       <Popover>
         <PopoverTrigger className="w-8 h-8 !p-0 !border-none !bg-transparent" onClick={handleClick}>
-          <Avatar className="h-8 w-8 rounded-lg cursor-pointer">
-            <AvatarImage src={avatarUrl} alt={user?.username} />
-            <AvatarFallback className="rounded-lg">{user?.username?.slice(0, 2)}</AvatarFallback>
-          </Avatar>
+          {renderAvatar()}
         </PopoverTrigger>
         <PopoverContent>
           <div className="flex items-center gap-2 pb-2">
-            <Avatar className="h-8 w-8 rounded-lg" onClick={() => {}}>
-              <AvatarImage src={avatarUrl} alt={user?.username} />
-              <AvatarFallback className="rounded-lg">{user?.username?.slice(0, 2)}</AvatarFallback>
-            </Avatar>
+            {renderAvatar()}
             <div className="flex flex-col">
               <div className="font-medium text-ellipsis w-[220px] overflow-hidden">{user?.username}</div>
               <div className="font-medium text-ellipsis w-[220px] overflow-hidden">{user?.email}</div>

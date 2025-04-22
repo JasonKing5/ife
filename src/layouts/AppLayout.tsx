@@ -50,27 +50,6 @@ export default function AppLayout() {
             ))}
           </NavigationMenuList>
         </NavigationMenu>
-        {/* {!token && (
-          <Button
-            variant="secondary"
-            onClick={() => navigate('/login')}
-            className="text-blue-600 font-bold"
-          >
-            Login
-          </Button>
-        )}
-        {token && (
-          <Button
-            variant="secondary"
-            onClick={() => {
-              logout()
-              navigate('/login')
-            }}
-            className="text-blue-600 font-bold"
-          >
-            Logout
-          </Button>
-        )} */}
         <AccountMenu />
       </header>
       <main className="flex-1 flex">
