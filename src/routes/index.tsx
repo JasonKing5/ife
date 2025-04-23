@@ -4,6 +4,7 @@ import AppLayout from "@/layouts/AppLayout";
 import AuthLayout from "@/layouts/AuthLayout";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import ResetPasswordPage from "@/pages/login/reset";
+import SettingsPage from "@/pages/settings";
 
 const Login = lazy(() => import("@/pages/login"));
 const HomePage = lazy(() => import("@/pages/home"));
@@ -39,6 +40,7 @@ export const AppRoutes = () =>
         { path: "user", element: <UserPage /> },
         { path: "dashboard", element: <Dashboard /> },
         { path: "*", element: <NotFound /> },
+        { path: "settings", element: <SettingsPage /> },
       ],
     },
   ]);

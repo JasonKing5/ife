@@ -79,7 +79,12 @@ export const updatePasswordSchema = z.object({
   password: z.string().min(6, "密码至少6位"),
 })
 
+export const settingsSchema = z.object({
+  username: z.string().min(2, "用户名至少2个字符"),
+})
+
 export type LoginFormValues = z.infer<typeof loginSchema>
 export type RegisterFormValues = z.infer<typeof registerSchema>
 export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>
 export type UpdatePasswordFormValues = z.infer<typeof updatePasswordSchema>
+export type SettingsFormValues = z.infer<typeof settingsSchema>
