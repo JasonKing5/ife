@@ -79,8 +79,8 @@ jasonking-frontend/
 ### 启动项目
 
 1. 克隆仓库
-git clone <repository-url>
-cd vite-demo
+git clone git@github.com:JasonKing5/ife.git
+cd ife
 
 2. 安装依赖
 pnpm install
@@ -91,7 +91,6 @@ pnpm dev
 4. 环境变量配置 .env
 
 VITE_API_BASE_URL=https://your-api-domain.com/api
-VITE_RESEND_API_KEY=your_resend_key
 
 ## 鉴权机制说明
 	•	登录成功后，access_token 和 refresh_token 存入 localStorage
